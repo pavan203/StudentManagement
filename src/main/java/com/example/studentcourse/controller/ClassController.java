@@ -17,6 +17,7 @@ public class ClassController {
     ClassService classService;
     @GetMapping("/all")
     public ResponseEntity<List<ClassesDto>> getAllClasses(){
+
         return classService.getAllClasses();
     }
     @GetMapping("/alll")

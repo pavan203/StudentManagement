@@ -15,8 +15,12 @@ import java.util.stream.IntStream;
 @RequestMapping("student")
 public class StudentController {
 
+
+    private final StudentService studentService;
     @Autowired
-    StudentService studentService;
+    StudentController(StudentService studentService){
+        this.studentService=studentService;
+    }
 
     @GetMapping("/")
     public String getStudent() {
@@ -37,7 +41,10 @@ public class StudentController {
     public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
-
+    @GetMapping("/count")
+    public List<Object[]> getStudentCounts() {
+        return studentService.getStudentCountByClass();
+    }
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> removeStudentById(@PathVariable Long id) {
         return studentService.removeStudentById(id);

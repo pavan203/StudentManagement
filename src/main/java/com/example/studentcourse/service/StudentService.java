@@ -43,12 +43,14 @@ public class StudentService {
                 .map(s->ResponseEntity.ok(studentMapper.toDto(s)))
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @Cacheable(value = "studentCountByClass")
+    public List<Object[]> getStudentCountByClass() {
+        return studentRepository.countStudentByClass();
+    }
+    @Cacheable(value = "studentListCache")
     public List<StudentDto> getSTudent() {
         List<Student> studentList= studentRepository.findAll();
-        for(Object[] obj:studentRepository.countStudentByClass()){
-            System.out.println(obj[0]+" "+obj[1]);
-        }
         if(studentList.isEmpty()) return null;
         else
             return studentList.stream()
@@ -65,6 +67,7 @@ public class StudentService {
     @Transactional
 
     @CacheEvict(value = "studentCountByClass", allEntries = true)
+
     public ResponseEntity<?> removeStudentById(Long id) {
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
